@@ -37,3 +37,20 @@ describe('POST /todos',() => {
         });
   });
 });
+
+describe('/GET Should return DB values', () => {
+  it('SHould return all the Documents in DB',(done) => {
+    supertest(app)
+        .get('/todos')
+        .expect(200)
+        .expect((res) => {
+          expect(res.body.todos.length).toBe(14);
+        })
+        .end((err, res) => {
+          if(err){
+            return done(err);
+          }
+          done();
+        });
+  });
+});
