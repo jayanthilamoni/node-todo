@@ -39,13 +39,38 @@ describe('POST /todos',() => {
 });
 
 describe('/GET Should return DB values', () => {
-  it('SHould return all the Documents in DB',(done) => {
+  it('Should return all the Documents in DB',(done) => {
     supertest(app)
         .get('/todos')
         .expect(200)
         .expect((res) => {
-          expect(res.body.todos.length).toBe(17);
+          expect(res.body.todos.length).toBe(18);
         })
+        .end((err, res) => {
+          if(err){
+            return done(err);
+          }
+          done();
+        });
+  });
+});
+
+describe('GET /User by ID',() => {
+  it('Should return Error message on passing wrong ID',(done) => {
+    supertest(app)
+        .get('/todos/:id')
+        .expect(404)
+        .end((err, res) => {
+          if(err){
+            return done(err);
+          }
+          done();
+        });
+  });
+  it('Should return a valid Todo',(done) => {
+    supertest(app)
+        .get('/todos/:id')
+        .expect(200)
         .end((err, res) => {
           if(err){
             return done(err);
