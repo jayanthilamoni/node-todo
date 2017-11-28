@@ -44,7 +44,7 @@ describe('/GET Should return DB values', () => {
         .get('/todos')
         .expect(200)
         .expect((res) => {
-          expect(res.body.todos.length).toBe(14);
+          expect(res.body.todos.length).toBe(17);
         })
         .end((err, res) => {
           if(err){
