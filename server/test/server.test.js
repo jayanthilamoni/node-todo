@@ -79,3 +79,28 @@ describe('GET /User by ID',() => {
         });
   });
 });
+
+describe('DELETE /User by ID',() => {
+  it('Should return Error message on passing wrong ID',(done) => {
+    supertest(app)
+        .delete('/todos/:id')
+        .expect(404)
+        .end((err, res) => {
+          if(err){
+            return done(err);
+          }
+          done();
+        });
+  });
+  it('Should delete a valid Todo',(done) => {
+    supertest(app)
+        .delete(`/todos/${'5a26e645bca94933844d1210'}`)
+        .expect(200)
+        .end((err, res) => {
+          if(err){
+            return done(err);
+          }
+          done();
+        });
+  });
+});
