@@ -69,7 +69,7 @@ describe('GET /User by ID',() => {
   });
   it('Should return a valid Todo',(done) => {
     supertest(app)
-        .get('/todos/:id')
+        .get(`/todos/${'5a1d194c801d7b197cc95c94'}`)
         .expect(200)
         .end((err, res) => {
           if(err){
@@ -94,8 +94,47 @@ describe('DELETE /User by ID',() => {
   });
   it('Should delete a valid Todo',(done) => {
     supertest(app)
-        .delete(`/todos/${'5a26e645bca94933844d1210'}`)
+        .delete(`/todos/${'5a1d1734c0d1642e74df4cc7'}`)
         .expect(200)
+        .end((err, res) => {
+          if(err){
+            return done(err);
+          }
+          done();
+        });
+  });
+});
+
+describe('PATCH /User by ID',() => {
+  it('Should return Error message on passing wrong ID',(done) => {
+    supertest(app)
+        .patch('/todos/:id')
+        .expect(404)
+        .end((err, res) => {
+          if(err){
+            return done(err);
+          }
+          done();
+        });
+  });
+  it('Should Update a valid Todo',(done) => {
+    supertest(app)
+        .patch(`/todos/${'5a1d18211d08262cd8a78cd8'}`)
+        .send({"note":"Hello",completed:true})
+        .expect(200)
+        .expect((req, res) => {
+          expect(req.body.note).toBe("Hello");
+          Todo.findByIdAndUpdate({"_id":"5a1d18211d08262cd8a78cd8"},{
+            $set:{
+              "note":req.body.note,
+              "completed":req.body.completed
+            }
+          },{
+            returnOriginal:false
+          }).then((result) => {
+            expect(result.note).toBe("Hello");
+          });
+        })
         .end((err, res) => {
           if(err){
             return done(err);
