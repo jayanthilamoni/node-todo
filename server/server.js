@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var {mongoose} = require('./db/mongoose.js');
 var {Todo} = require('./models/todo.js');
 var {User} = require('./models/user.js');
+var {authenticate} = require('./middleware/authenticate.js');
 
 var app = express();
 app.use(bodyParser.json());
@@ -107,6 +108,10 @@ app.post('/user',(req, res) => {
   }).catch((err) => {
     res.status(400).send(err);
   });
+});
+
+app.get('/user/me',authenticate,(req,res) => {
+  res.send(req.user);
 });
 
 app.listen(port,() => {
